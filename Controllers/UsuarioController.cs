@@ -24,5 +24,31 @@ namespace ProyectoFinalJoseArmando.Controllers
                 Mail = usuario.Mail
             });
         }
+
+
+        //TRAER UN USUARIO
+        [HttpGet("TraerUsuario")]
+
+        public Usuarios TraerUsuario(string nombreUsuario)
+        {
+            return UsuarioHandler.TraerUsuario(nombreUsuario);
+        }
+
+
+
+        //Inicio de sesion
+        [HttpGet("{nombreUsuario}/{contraseña}")]
+        public bool InicioSesionUsuarios(string nombreUsuario, string contraseña)
+        {
+            Usuarios usuario = UsuarioHandler.InicioSesionUsuarios(nombreUsuario, contraseña);
+            if (usuario.Nombre == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
     }
 }

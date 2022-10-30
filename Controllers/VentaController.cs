@@ -10,25 +10,42 @@ namespace ProyectoFinalJoseArmando.Controllers
     [ApiController]
     public class VentaController : ControllerBase
     {
-        //Cargar Venta
-        [HttpPost]
-        public bool CargarVenta([FromBody] PostVenta venta, int Stock, int IdProducto)
+
+
+        //Cargar Ventas Actualizado
+        [HttpPost("CargarVenta")]
+        public void CargarVenta([FromBody] List<Producto> pv, int idUsuario)
+
         {
-            try
-            {
-                return VentaHandler.CargarVenta(Stock, IdProducto, new Venta
-                {
-
-                    Comentarios = venta.Comentarios,
-                    IdUsuario = venta.IdUsuario
-
-                });
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
+            VentaHandler.CargarVenta(pv, idUsuario);
         }
+
+        //Traer Venta
+        [HttpGet("TraerVentas")]
+        public List<ProductoVendidoVenta> ProductoVendidoVenta()
+        {
+            return VentaHandler.ProductoVendidoVenta();
+        }
+
+        ////Cargar Venta VIEJITO
+        //[HttpPost]
+        //public bool CargarVenta([FromBody] PostVenta venta, int Stock, int IdProducto)
+        //{
+        //    try
+        //    {
+        //        return VentaHandler.CargarVenta(Stock, IdProducto, new Venta
+        //        {
+
+        //            Comentarios = venta.Comentarios,
+        //            IdUsuario = venta.IdUsuario
+
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //        return false;
+        //    }
+        //}
     }
 }

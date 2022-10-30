@@ -6,7 +6,7 @@ namespace ProyectoFinalJoseArmando.Repository
 {
     public class ProductoHandler
     {
-        public const string ConnectionString = "Server=DESKTOP-VRSGEG4;DataBase=SistemaGestion;Trusted_Connection=True";
+        
 
         /*
          Crear producto: Recibe un producto como parámetro, deberá crearlo, puede ser
@@ -18,7 +18,7 @@ namespace ProyectoFinalJoseArmando.Repository
         public static bool CrearProducto(Producto producto)
         {
             bool resulta2 = false;
-            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(SQL.ConnectionString()))
             {
                 string queryInsert = "IF NOT EXISTS(SELECT * FROM Producto WHERE Descripciones = @descripcionesParameter) BEGIN INSERT INTO Producto " +
                     "(Descripciones,Costo,PrecioVenta,Stock,IdUsuario) VALUES " +
@@ -68,7 +68,7 @@ namespace ProyectoFinalJoseArmando.Repository
         public static bool ModificarProducto(Producto producto)
         {
             bool resulta2 = false;
-            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(SQL.ConnectionString()))
             {
                 string queryInsert = "UPDATE Producto " +
                     "SET Descripciones = @descripciones, Costo = @costo, PrecioVenta = @precioVenta, Stock = @stock, IdUsuario = @idUsuario WHERE Id = @id ";
@@ -118,7 +118,7 @@ namespace ProyectoFinalJoseArmando.Repository
         public static bool EliminarProducto(int idProducto)
         {
             bool resulta2 = false;
-            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(SQL.ConnectionString()))
             {
                 string queryDelete2 = "DELETE FROM Producto WHERE Id = @idParam";
 
@@ -143,6 +143,45 @@ namespace ProyectoFinalJoseArmando.Repository
             return resulta2;
         }
 
+
+       
+        
+        //TRAER UN PRODUCTO
+        public static List<Producto> GetProductos()
+        {
+            List<Producto> resultados = new List<Producto>();
+
+            using (SqlConnection sqlConnection = new SqlConnection(SQL.ConnectionString()))
+            {
+                using (SqlCommand sqlCommand = new SqlCommand("SELECT * FROM Producto", sqlConnection))
+                {
+
+                    sqlConnection.Open();
+
+                    using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                    {
+                        if (dataReader.HasRows)
+                        {
+                            while (dataReader.Read())
+                            {
+                                Producto producto = new Producto();
+                                producto.Id = Convert.ToInt32(dataReader["Id"]);
+                                producto.Stock = Convert.ToInt32(dataReader["Stock"]);
+                                producto.IdUsuario = Convert.ToInt32(dataReader["IdUsuario"]);
+                                producto.Costo = Convert.ToInt32(dataReader["Costo"]);
+                                producto.PrecioVenta = Convert.ToInt32(dataReader["PrecioVenta"]);
+                                producto.Descripcion = dataReader["Descripciones"].ToString();
+
+                                resultados.Add(producto);
+                            }
+                        }
+                    }
+                    sqlConnection.Close();
+                }
+            }
+
+            return resultados;
+        }
 
     }
 

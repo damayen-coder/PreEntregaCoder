@@ -66,5 +66,12 @@ namespace ProyectoFinalJoseArmando.Controllers
                 return false;
             }
         }
+
+        //Traer todos los productos
+        [HttpGet]
+        public List<Producto> GetProductos()
+        {
+            return ProductoHandler.GetProductos();
+        }
     }
 }
