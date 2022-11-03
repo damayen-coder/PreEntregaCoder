@@ -55,9 +55,6 @@ namespace ProyectoFinalJoseArmando.Repository
             return resulta2;
         }
 
-
-
-
         /*
          Modificar producto: Recibe un producto como parámetro, debe modificarlo con la
          nueva información.
@@ -174,6 +171,58 @@ namespace ProyectoFinalJoseArmando.Repository
 
                                 resultados.Add(producto);
                             }
+                        }
+                    }
+                    sqlConnection.Close();
+                }
+            }
+
+            return resultados;
+        }
+
+
+        //Traer Productos cargados por cierto usuario
+        public static List<Producto> TraerProductos(int idUsuario)
+        {
+            List<Producto> resultados = new List<Producto>();
+
+            using (SqlConnection sqlConnection = new SqlConnection(SQL.ConnectionString()))
+            {
+                using (SqlCommand sqlCommand = new SqlCommand("SELECT * FROM Producto WHERE IdUsuario = @idUsuario", sqlConnection))
+                {
+                    sqlCommand.Parameters.AddWithValue("@idUsuario", idUsuario);
+
+                    sqlConnection.Open();
+
+                    using (SqlDataReader dataReader = sqlCommand.ExecuteReader())
+                    {
+                        if (dataReader.HasRows)
+                        {
+                            while (dataReader.Read())
+                            {
+                                Producto producto = new Producto();
+                                producto.Id = Convert.ToInt32(dataReader["Id"]);
+                                producto.Stock = Convert.ToInt32(dataReader["Stock"]);
+                                producto.IdUsuario = Convert.ToInt32(dataReader["IdUsuario"]);
+                                producto.Costo = Convert.ToInt32(dataReader["Costo"]);
+                                producto.PrecioVenta = Convert.ToInt32(dataReader["PrecioVenta"]);
+                                producto.Descripcion = dataReader["Descripciones"].ToString();
+
+                                resultados.Add(producto);
+                            }
+                        }
+                        else
+                        {
+                            Producto producto = new Producto();
+                            producto.Id = 0;
+                            producto.Descripcion = "No cargo ningun Producto, el Usuario: " + idUsuario;
+                            producto.Costo = 0;
+                            producto.PrecioVenta = 0;
+                            producto.Stock = 0;
+                            producto.IdUsuario = idUsuario;
+
+                            resultados.Add(producto);
+
                         }
                     }
                     sqlConnection.Close();

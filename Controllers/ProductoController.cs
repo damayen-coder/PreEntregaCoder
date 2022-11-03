@@ -11,6 +11,7 @@ namespace ProyectoFinalJoseArmando.Controllers
     [ApiController]
     public class ProductoController : ControllerBase
     {
+      
         //Crear Producto
         [HttpPost]
         public bool CrearProducto([FromBody] PostProducto producto)
@@ -73,5 +74,14 @@ namespace ProyectoFinalJoseArmando.Controllers
         {
             return ProductoHandler.GetProductos();
         }
+
+        //Traer todos los productos de cierto Usuario
+        [HttpGet("{idUsuario}")]
+        public List<Producto> TraerProductos(int idUsuario)
+        {
+            return ProductoHandler.TraerProductos(idUsuario);
+        }
+
+
     }
 }

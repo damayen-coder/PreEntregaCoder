@@ -97,6 +97,8 @@ namespace ProyectoFinalJoseArmando.Repository
             }
         }
 
+
+        //Iniciar Sesion
         public static Usuarios InicioSesionUsuarios(string nombreUsuario, string contraseña)
         {
             Usuarios resultado = new Usuarios();

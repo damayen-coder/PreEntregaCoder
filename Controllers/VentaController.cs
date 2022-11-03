@@ -14,10 +14,9 @@ namespace ProyectoFinalJoseArmando.Controllers
 
         //Cargar Ventas Actualizado
         [HttpPost("CargarVenta")]
-        public void CargarVenta([FromBody] List<Producto> pv, int idUsuario)
-
+        public void CargarVenta([FromBody] VentaProducto vtas)
         {
-            VentaHandler.CargarVenta(pv, idUsuario);
+            VentaHandler.CargarVenta(vtas);
         }
 
         //Traer Venta
@@ -26,6 +25,22 @@ namespace ProyectoFinalJoseArmando.Controllers
         {
             return VentaHandler.ProductoVendidoVenta();
         }
+
+
+
+        //Traer Ventas de un Usuario
+        [HttpGet("{idVenta}")]
+        public List<ProductoVendidoVenta> ProductoVendidoVenta(int idVenta)
+        {
+            return VentaHandler.ProductoVendidoVenta(idVenta);
+        }
+
+
+
+
+
+
+
 
         ////Cargar Venta VIEJITO
         //[HttpPost]
